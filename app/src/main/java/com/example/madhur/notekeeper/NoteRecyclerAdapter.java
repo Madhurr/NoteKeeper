@@ -1,12 +1,12 @@
+package com.example.madhur.notekeeper;
+
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.example.madhur.notekeeper.NoteInfo;
-import com.example.madhur.notekeeper.R;
 
 import java.util.List;
 
@@ -33,24 +33,36 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+    NoteInfo note = mNotes.get(position);
+    holder.textCourse.setText(note.getCourse().getTitle());
+    holder.textTitle.setText(note.getTitle());
+    holder.currentposition = position;
     }
 
     @Override
     public int getItemCount() {
 
-        return 0;
+        return mNotes.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public final TextView textCourse;
         public final TextView textTitle;
+        public int currentposition;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textCourse = (TextView) itemView.findViewById(R.id.text_course);
             textTitle = (TextView) itemView.findViewById(R.id.text_title);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext,NoteActivity.class);
+                    intent.putExtra(NoteActivity.NOTE_POSITION,currentposition);
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }
